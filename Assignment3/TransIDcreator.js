@@ -27,7 +27,14 @@ class Output{
         this.pubkey = pubkey;
     }
 }
-
+class Transaction{
+    constructor(numInputs,inputs ,numOutputs ,outputs) {
+        this.numInputs = numInputs
+        this.inputs = inputs;
+        this.numOutputs = numOutputs;
+        this.outputs = outputs;
+    }
+}
 function publickey(path){
     let pem=fs.readFileSync(path);    
     let publicKey_ = pem.toString('utf-8');
@@ -104,21 +111,22 @@ const questionoutput= () =>{
     });
 }
 function inputBuffer(){
-    var bufi = Buffer.alloc(4)
-    bufi.writeInt32BE(i,0);
-    
+    var numi = Buffer.alloc(4)
+    numi.writeInt32BE(i,0);
+    var bufi = Buffer.alloc(0);
     for (var j =0;j<i;j++){
        bufi = transitionToByteArrayInput(bufi,inputarray[j].TransID ,inputarray[j].index , inputarray[j].length_sign , inputarray[j].signature);
     }
-    return bufi
+    return [numi,bufi]
 }
 function outputBuffer(){
-    var bufo = Buffer.alloc(4);
-    bufo.writeInt32BE(o,0);
+    var numo = Buffer.alloc(4);
+    numo.writeInt32BE(o,0);
+    var bufo= Buffer.alloc(0);
     for (var j =0;j<o;j++){
       bufo = transitionToByteArrayOutput(bufo,outputarray[j].coins ,outputarray[j].length_pubkey , outputarray[j].pubkey);
     }
-  return bufo
+  return [numo,bufo]
 }
 
 const main = async() =>{
@@ -136,13 +144,13 @@ const main = async() =>{
     }
     console.log(outputarray)
     //console.log(inputarray.length)
-      var bufi =inputBuffer()
-      var bufo =outputBuffer()
-      
+      var bufferInput =inputBuffer()
+      var bufferOutput =outputBuffer()
+      var trans =new Transaction(bufferInput[0],bufferInput[1],bufferOutput[0],bufferOutput[1]);
     // console.log(bufi.length);
     // console.log(bufi.toString('ascii'));
     // console.log(bufo.length);
-    var buf = Buffer.concat([bufi , bufo]);
+    var buf = Buffer.concat([trans.numInputs,trans.inputs ,trans.numOutputs, trans.outputs]);
     // console.log(buf);
     // console.log(buf.length);
     hashed = crypto.createHash('sha256').update(buf).digest('hex');

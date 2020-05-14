@@ -89,7 +89,7 @@ const questioninput= () =>{
             rl.question("Enter the index :",    (index_)=>{
                 rl.question("Enter the signature :",(sign_)=>{
                        
-                      console.log(sign_);
+                      //console.log(sign_);
                       inputarray.push(new Input(transid_ ,parseInt( index_),sign_.length, sign_));
                       resolve()       
                     });
@@ -152,7 +152,7 @@ const main = async() =>{
     // console.log(bufo.length);
     var buf = Buffer.concat([trans.numInputs,trans.inputs ,trans.numOutputs, trans.outputs]);
     // console.log(buf);
-    // console.log(buf.length);
+     console.log(buf.length);
     hashed = crypto.createHash('sha256').update(buf).digest('hex');
     console.log(hashed);
 

@@ -8,7 +8,29 @@ const rl =readline.createInterface({
     output:process.stdout,
 });
 
+class Input {
+    constructor (transactionID, index, sign_length, sign) {
+        this.transactionID = transactionID;
+        this.index = index;
+        this.sign_length = sign_length;
+        this.sign = sign;
+    }
+}
+
+class Output {
+    constructor (coins, pubkey_len, pub_key){
+        this.coins = coins;
+        this.pubkey_len = pubkey_len;
+        this.pub_key = pub_key;
+    }
+}
+
 function details(dat){
+    const transactionID_I = crypto.createHash('sha256').update(Buffer.from(dat)).digest('hex');
+    console.log("Transaction ID: "+transactionID_I );
+    let Inputs = []
+    let Outputs = [];
+
     var i=0;
     var num_inputsBuf = dat.slice(i,i+4);
     var num_inputs = num_inputsBuf.readInt32BE(0);
@@ -31,9 +53,11 @@ function details(dat){
         i=i+4;
 
         var sign_buf = dat.slice(i,i+length);
-        console.log("\t\tSignature :"+sign_buf.toString('utf-8'));
+        console.log("\t\tSignature :"+sign_buf.toString('hex'));
         i=i+length;
         console.log("\n");
+        let In = new Input(transid.toString('hex'), index,length,sign_buf.toString('hex') );
+        Inputs.push(In);
     }
     console.log("\n");
 
@@ -59,6 +83,9 @@ function details(dat){
         console.log("\t\tPublic Key :"+pubkey_buf.toString('utf-8'));
         i=i+length_pubkey;
         console.log("\n");
+
+        let Out = new Output(Number(coins), length_pubkey, pubkey_buf.toString('utf-8'));
+        Outputs.push(Out);
     }
     console.log("\n");
 
@@ -67,7 +94,7 @@ function details(dat){
 rl.question("Enter the path :",(path)=>{
     let dat=fs.readFileSync(path);
     //console.log(dat.length);
-    console.log("Transaction ID: "+path.substring(0,32));
+    
     details(dat)
     rl.close();
 

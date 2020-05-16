@@ -52,7 +52,7 @@ function transitionToByteArrayInput(buff,_transid , _index , _length_sign , _sig
     var buf3 = Buffer.alloc(4);
     buf3.writeInt32BE(_length_sign, 0);
     //console.log(buf3.length)
-    var buf4=Buffer.from(_sign , 'utf-8');
+    var buf4=Buffer.from(_sign , 'hex');
     //console.log(buf4.length)
     var buf = Buffer.concat([buff,buf1,buf2,buf3,buf4]);
     return buf ;
@@ -90,7 +90,7 @@ const questioninput= () =>{
                 rl.question("Enter the signature :",(sign_)=>{
                        
                       //console.log(sign_);
-                      inputarray.push(new Input(transid_ ,parseInt( index_),sign_.length, sign_));
+                      inputarray.push(new Input(transid_ ,parseInt( index_),sign_.length/2, sign_));
                       resolve()       
                     });
                });
@@ -152,7 +152,7 @@ const main = async() =>{
     // console.log(bufo.length);
     var buf = Buffer.concat([trans.numInputs,trans.inputs ,trans.numOutputs, trans.outputs]);
     // console.log(buf);
-     console.log(buf.length);
+    console.log(buf.length);
     hashed = crypto.createHash('sha256').update(buf).digest('hex');
     console.log(hashed);
 

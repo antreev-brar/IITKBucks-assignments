@@ -54,7 +54,7 @@ rl.question("Index :",(index)=>{
         rl.question("Target:",(target)=>{
             rl.question("Block Body:",(path)=>{
                 
-                console.log('Initial Timestamp'+now());
+                console.log('Initial Timestamp  ::'+now());
                 //console.log(BigInt(now()));
                 blockHeader(index , hash , target , path)
                 rl.close();

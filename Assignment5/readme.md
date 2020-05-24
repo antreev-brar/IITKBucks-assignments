@@ -19,7 +19,7 @@ The following code generates the timestamp and nonce ,such that the hash of Bloc
 ## Usage 
 
 ```
-node calc.js
+node NonceCalculator.js
 ```
 
 ## Calculated values 

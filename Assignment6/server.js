@@ -5,7 +5,7 @@ var app = express();
 
 app.use(bodyParser.json({extended: false }));
 
-var peers = ['http://localhost:8000/add']
+var peers = [ 'http://de8d10b9a543.ngrok.io']
 var map = new Map();
 app.post('/add',function(req,res){
         console.log("you are in /add");
@@ -17,10 +17,10 @@ app.post('/add',function(req,res){
 
         var i;
         for (i = 0; i < peers.length; i++) { 
-            console.log("Antreev-brar Sent "+req.body.key+" : "+req.body.value+" to  "+peers[i]);
+            console.log("Antreev-brar Sent "+req.body.key+" : "+req.body.value+" to  "+peers[i]+'/add');
             request.post(
                 {
-                url:peers[i],
+                url:peers[i]+'/add',
                 json: {
                   "key":req.body.key,
                   "value":req.body.value
@@ -41,7 +41,7 @@ app.post('/add',function(req,res){
         else{
             console.log('request ignored')
         }
-        res.end();
+        //res.end();
 
 })
 function mapToObj(inputMap) {

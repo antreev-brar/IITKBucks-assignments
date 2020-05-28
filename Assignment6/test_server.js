@@ -5,7 +5,7 @@ var app = express();
 
 app.use(bodyParser.json({extended: false }));
 
-var peers = ['http://localhost:3000/add']
+var peers = ['http://fc4d50a12a21.ngrok.io']
 var map = new Map();
 app.post('/add',function(req,res){
         console.log("you are in /add");
@@ -20,7 +20,7 @@ app.post('/add',function(req,res){
             console.log("Antreev-brar Sent "+req.body.key+" : "+req.body.value+" to  "+peers[i]);
             request.post(
                 {
-                url:peers[i],
+                url:peers[i]+'/add',
                 json: {
                   "key":req.body.key,
                   "value":req.body.value

@@ -5,7 +5,7 @@ var app = express();
 
 app.use(bodyParser.json({extended: false }));
 
-var peers = [ 'http://de8d10b9a543.ngrok.io']
+var peers = [ 'http://86c3a429b6b0.ngrok.io','http://0b7c83529168.ngrok.io']
 var map = new Map();
 app.post('/add',function(req,res){
         console.log("you are in /add");
